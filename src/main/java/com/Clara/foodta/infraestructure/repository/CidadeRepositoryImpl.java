@@ -1,15 +1,19 @@
 package com.Clara.foodta.infraestructure.repository;
 
 import com.Clara.foodta.domain.model.Cidade;
+import com.Clara.foodta.domain.model.Cozinha;
+import com.Clara.foodta.domain.repository.CidadeRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public class CidadeRepositoryImpl {
+
+
     @Component
-    public class CidadeRepoitoryImpl implements CidadeRepository {
+    public class CidadeRepositoryImpl implements CidadeRepository {
 
         @PersistenceContext
         private EntityManager manager;
@@ -21,19 +25,22 @@ public class CidadeRepositoryImpl {
 
         @Override
         public Cidade buscar(Long id) {
-            return null;
+            return manager.find(Cidade.class, id);
         }
-
+        @Transactional
         @Override
         public Cidade salvar(Cidade cidade) {
-            return null;
+            return manager.merge(cidade);
         }
 
 
-
+        @Transactional
         @Override
         public void remover(long id) {
-
+            Cidade cidade = buscar(id);
+            manager.remove(cidade);
         }
     }
-}
+
+
+

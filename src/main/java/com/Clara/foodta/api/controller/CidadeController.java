@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-public class CidadeController {
+
     @RestController
     @RequestMapping("/cidades")
     public class CidadeController {
@@ -22,4 +22,4 @@ public class CidadeController {
             return cidadeRepository.listar();
         }
     }
-}
+

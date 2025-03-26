@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-public class EstadoController {
+
     @RestController
     @RequestMapping("/estados")
     public class EstadoController {
@@ -22,4 +22,4 @@ public class EstadoController {
             return estadoRepository.listar();
         }
     }
-}
+

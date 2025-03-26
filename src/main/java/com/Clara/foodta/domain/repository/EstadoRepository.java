@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface EstadoRepository {
+
     @Repository
     public interface EstadoRepository {
         List<Estado> listar();
@@ -13,4 +13,4 @@ public interface EstadoRepository {
         Estado salvar (Estado estado);
         void remover(long id);
     }
-}
+

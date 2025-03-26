@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface CidadeRepository {
+
     @Repository
     public interface CidadeRepository {
         List<Cidade> listar();
@@ -13,4 +13,4 @@ public interface CidadeRepository {
         Cidade salvar (Cidade cidade);
         void remover(long id);
     }
-}
+
