@@ -1,8 +1,10 @@
 package com.Clara.foodta.api.controller;
 
+import com.Clara.foodta.domain.model.Cozinha;
 import com.Clara.foodta.domain.model.FormaPagamento;
 import com.Clara.foodta.domain.repository.FormaPagamentoRepository;
 import com.Clara.foodta.domain.service.FormaPagamentoService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,5 +43,17 @@ import java.util.List;
         @ResponseStatus(HttpStatus.CREATED)
         public FormaPagamento adicionar (@RequestBody FormaPagamento formapagamento){
             return formaPagamentoService.salvar(formapagamento);
+        }
+        @PutMapping("/{formapagamentoId}")
+        public ResponseEntity<FormaPagamento>atualizar(@PathVariable Long formapagamentoId, @RequestBody FormaPagamento formapagamento){
+            FormaPagamento formapagamentoAtual = formapagamentoRepository.buscar(formapagamentoId);
+
+            if(formapagamentoAtual != null){
+                BeanUtils.copyProperties(formapagamento, formapagamentoAtual, "id");
+
+                formapagamentoAtual = formaPagamentoService.salvar(formapagamentoAtual);
+                return ResponseEntity.ok(formapagamentoAtual);
+            }
+            return ResponseEntity.notFound().build();
         }
 }
