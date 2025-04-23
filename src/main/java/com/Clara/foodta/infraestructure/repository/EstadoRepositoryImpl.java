@@ -6,6 +6,7 @@ import com.Clara.foodta.domain.repository.EstadoRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -34,6 +35,9 @@ public class EstadoRepositoryImpl implements EstadoRepository {
     @Override
     public void remover(long id) {
         Estado estado= buscar(id);
-        manager.remove(estado);
+    if (estado == null){
+        throw new EmptyResultDataAccessException(1);
+    }
+    manager.remove(estado);
     }
 }

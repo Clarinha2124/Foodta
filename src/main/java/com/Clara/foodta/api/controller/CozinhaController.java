@@ -1,6 +1,7 @@
 package com.Clara.foodta.api.controller;
 
 
+import com.Clara.foodta.domain.exception.EntidadeEmUsoException;
 import com.Clara.foodta.domain.model.Cozinha;
 import com.Clara.foodta.domain.repository.CozinhaRepository;
 import com.Clara.foodta.domain.service.CozinhaService;
@@ -55,5 +56,19 @@ public class CozinhaController {
             return ResponseEntity.ok(cozinhaAtual);
         }
         return ResponseEntity.notFound().build();
+    }
+    @DeleteMapping("/{cozinhaId}")
+    public ResponseEntity<Cozinha> remover (@PathVariable Long cozinhaId){
+        try{
+            cozinhaService.excluir(cozinhaId);
+            return ResponseEntity.notFound().build();
+        }
+        catch (EnumConstantNotPresentException e) {
+            return ResponseEntity.notFound().build();
+        }
+        catch (EntidadeEmUsoException e){
+            return  ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
     }
 }

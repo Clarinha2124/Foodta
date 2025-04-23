@@ -1,5 +1,7 @@
 package com.Clara.foodta.api.controller;
 
+import com.Clara.foodta.domain.exception.EntidadeEmUsoException;
+import com.Clara.foodta.domain.model.Cidade;
 import com.Clara.foodta.domain.model.Estado;
 import com.Clara.foodta.domain.model.Restaurante;
 import com.Clara.foodta.domain.repository.RestauranteRepository;
@@ -23,37 +25,50 @@ public class RestauranteController {
     private RestauranteService restauranteService;
 
     @GetMapping
-    public List<Restaurante> listar(){
+    public List<Restaurante> listar() {
         return restauranteRepository.listar();
     }
 
     @GetMapping("/{restauranteId}")
-    public ResponseEntity<Restaurante> buscar(@PathVariable Long restauranteaId){
+    public ResponseEntity<Restaurante> buscar(@PathVariable Long restauranteaId) {
         Restaurante restaurante = restauranteRepository.buscar(restauranteaId);
 
-        if (restaurante != null){
+        if (restaurante != null) {
             return ResponseEntity.ok(restaurante);
         }
 
         return ResponseEntity.notFound().build();
     }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurante adicionar (@RequestBody Restaurante restaurante){
+    public Restaurante adicionar(@RequestBody Restaurante restaurante) {
         return restauranteService.salvar(restaurante);
     }
+
     @PutMapping("/{restauranteId}")
-    public ResponseEntity<Restaurante>atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante){
+    public ResponseEntity<Restaurante> atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
         Restaurante restauranteAtual = restauranteRepository.buscar(restauranteId);
 
-        if(restauranteAtual != null){
-            BeanUtils.copyProperties(restaurante,restauranteAtual, "id");
+        if (restauranteAtual != null) {
+            BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
 
             restauranteAtual = restauranteService.salvar(restauranteAtual);
             return ResponseEntity.ok(restauranteAtual);
         }
         return ResponseEntity.notFound().build();
     }
+
+    @DeleteMapping("/{restauranteId}")
+    public ResponseEntity<Restaurante> remover(@PathVariable Long restauranteId) {
+        try {
+            restauranteService.excluir(restauranteId);
+            return ResponseEntity.notFound().build();
+        } catch (EnumConstantNotPresentException e) {
+            return ResponseEntity.notFound().build();
+        } catch (EntidadeEmUsoException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
 }
-
-

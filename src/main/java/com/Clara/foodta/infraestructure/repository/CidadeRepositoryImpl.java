@@ -6,6 +6,7 @@ import com.Clara.foodta.domain.repository.CidadeRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -38,6 +39,9 @@ import java.util.List;
         @Override
         public void remover(long id) {
             Cidade cidade = buscar(id);
+            if (cidade == null){
+                throw new EmptyResultDataAccessException(1);
+            }
             manager.remove(cidade);
         }
     }

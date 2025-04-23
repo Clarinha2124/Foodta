@@ -6,6 +6,7 @@ import com.Clara.foodta.domain.repository.RestauranteRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -35,6 +36,9 @@ public class RestauranteRepositoryImpl implements RestauranteRepository {
     @Override
     public void remover(long id) {
     Restaurante restaurante= buscar(id);
+    if (restaurante == null){
+        throw new EmptyResultDataAccessException(1);
+    }
     manager.remove(restaurante);
     }
 }
