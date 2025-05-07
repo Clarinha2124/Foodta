@@ -12,9 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 
-    @RestController
+@RestController
     @RequestMapping("/formapagamentos")
     public class FormaPagamentoController {
 
@@ -27,16 +28,16 @@ import java.util.List;
 
         @GetMapping
         public List<FormaPagamento> listar() {
-            return formapagamentoRepository.listar();
+            return formapagamentoRepository.findAll();
         }
 
 
         @GetMapping("/{formapagamentoId}")
         public ResponseEntity<FormaPagamento> buscar(@PathVariable Long formapagamentoId) {
-            FormaPagamento formapagamento = formapagamentoRepository.buscar(formapagamentoId);
+            Optional <FormaPagamento> formapagamento = formapagamentoRepository.findById(formapagamentoId);
 
-            if (formapagamento != null) {
-                return ResponseEntity.ok(formapagamento);
+            if (formapagamento.isPresent()) {
+                return ResponseEntity.ok(formapagamento.get());
             }
 
             return ResponseEntity.notFound().build();
@@ -50,13 +51,13 @@ import java.util.List;
 
         @PutMapping("/{formapagamentoId}")
         public ResponseEntity<FormaPagamento> atualizar(@PathVariable Long formapagamentoId, @RequestBody FormaPagamento formapagamento) {
-            FormaPagamento formapagamentoAtual = formapagamentoRepository.buscar(formapagamentoId);
+           Optional <FormaPagamento> formapagamentoAtual = formapagamentoRepository.findById(formapagamentoId);
 
             if (formapagamentoAtual != null) {
                 BeanUtils.copyProperties(formapagamento, formapagamentoAtual, "id");
 
-                formapagamentoAtual = formaPagamentoService.salvar(formapagamentoAtual);
-                return ResponseEntity.ok(formapagamentoAtual);
+               FormaPagamento formapagamentoSalva = formaPagamentoService.salvar(formapagamentoAtual.get());
+                return ResponseEntity.ok(formapagamentoSalva);
             }
             return ResponseEntity.notFound().build();
         }

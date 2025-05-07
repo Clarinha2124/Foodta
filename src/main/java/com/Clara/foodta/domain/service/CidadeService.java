@@ -13,11 +13,11 @@ public class CidadeService {
 @Autowired
     private CidadeRepository cidadeRepository;
     public Cidade salvar(Cidade cidade){
-        return cidadeRepository.salvar(cidade);
+        return cidadeRepository.save(cidade);
     }
     public void excluir (Long id){
         try{
-            cidadeRepository.remover(id);
+            cidadeRepository.deleteById(id);
         }
         catch (DataIntegrityViolationException e){
             throw new EntidadeEmUsoException(String.format("Cidade ou código %d não pode ser removida, pois está em uso.", id));

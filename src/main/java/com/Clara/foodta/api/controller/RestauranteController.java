@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -26,15 +27,15 @@ public class RestauranteController {
 
     @GetMapping
     public List<Restaurante> listar() {
-        return restauranteRepository.listar();
+        return restauranteRepository.findAll();
     }
 
     @GetMapping("/{restauranteId}")
     public ResponseEntity<Restaurante> buscar(@PathVariable Long restauranteaId) {
-        Restaurante restaurante = restauranteRepository.buscar(restauranteaId);
+        Optional <Restaurante> restaurante = restauranteRepository.findById(restauranteaId);
 
-        if (restaurante != null) {
-            return ResponseEntity.ok(restaurante);
+        if (restaurante.isPresent()) {
+            return ResponseEntity.ok(restaurante.get());
         }
 
         return ResponseEntity.notFound().build();
@@ -48,13 +49,13 @@ public class RestauranteController {
 
     @PutMapping("/{restauranteId}")
     public ResponseEntity<Restaurante> atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
-        Restaurante restauranteAtual = restauranteRepository.buscar(restauranteId);
+       Optional <Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
 
-        if (restauranteAtual != null) {
+        if (restauranteAtual.isPresent()) {
             BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
 
-            restauranteAtual = restauranteService.salvar(restauranteAtual);
-            return ResponseEntity.ok(restauranteAtual);
+            Restaurante restauranteSalva = restauranteService.salvar(restauranteAtual.get());
+            return ResponseEntity.ok(restauranteSalva);
         }
         return ResponseEntity.notFound().build();
     }
