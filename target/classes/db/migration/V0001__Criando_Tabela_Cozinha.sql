@@ -1,22 +1,22 @@
-    create Table tb_cozinhas(
+    create Table tb_cozinha(
         id bigint not null auto_increment,
         nome_cozinha varchar (70),
         primary key (id)
-    ) engine=InnoDB default charset=utf8
+    ) engine=InnoDB default charset=utf8;
 
     create table tb_estado(
     id bigint not null auto_increment,
     nome_estado varchar (80) not null
     primary key (id)
-    ) engine=InnoDB default charset=utf8
+    ) engine=InnoDB default charset=utf8;
 
     create table tb_cidade(
-    id bigint ot null auto_increment
+    id bigint not null auto_increment
     nome_cidade varchar (80) not null,
     estado_id bigint not null,
 
     primary key (id)
-     )engine=InnoDB default charset=utf8
+     )engine=InnoDB default charset=utf8;
 
     create table  forma_pagamento(
     id bigint not null auto_increment,
