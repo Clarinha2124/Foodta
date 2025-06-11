@@ -6,12 +6,12 @@
 
     create table tb_estado(
     id bigint not null auto_increment,
-    nome_estado varchar (80) not null
+    nome_estado varchar (80) not null,
     primary key (id)
     ) engine=InnoDB default charset=utf8;
 
     create table tb_cidade(
-    id bigint not null auto_increment
+    id bigint not null auto_increment,
     nome_cidade varchar (80) not null,
     estado_id bigint not null,
 
@@ -62,14 +62,14 @@
         nome varchar (80) not null,
         taxa_frete decimal (10,2) not null,
         data_atualizacao datetime not null,
-        data_cadastro datetime not null
+        data_cadastro datetime not null,
 
         endereco_cidade_id bigint,
         endereco_cep varchar(9),
         endereco_logradouro varchar(100),
         endereco_numero varchar(20),
         endereco_complemento varchar (60),
-        endereco_bairro varchar (60)
+        endereco_bairro varchar (60),
         primary key (id)
         )engine=InnoDB default charset=utf8;
 
@@ -84,14 +84,14 @@
         id bigint not null auto_increment,
         nome varchar (80) not null,
         email varchar (255) not null,
-        senha varchar (255) not null
+        senha varchar (255) not null,
 
         primary key (id)
         ) engine=InnoDB default charset=utf8;
 
         create table usuario_grupo(
         usuario_id bigint not null,
-        grupo_id bigint not null,
+        grupo_id bigint not null
         ) engine=InnoDB default charset=utf8;
 
         alter table grupo_permissao add constraint fk_grupo_permissao_permissao
@@ -103,14 +103,14 @@
         alter table produto add constraint fk_grupo_restaurante
         foreign key (restaurante_id) references restaurante (id);
 
-        alter table cidade add constraint fk_cidade_estado
-        foreign key (estado_id) references estado (id);
+        alter table tb_cidade add constraint fk_cidade_estado
+        foreign key (estado_id) references tb_estado (id);
 
         alter table restaurante add constraint fk_cozinha_restaurante
-        foreign key (cozinha_id) references cozinha (id);
+        foreign key (cozinha_id) references tb_cozinha (id);
 
          alter table restaurante add constraint fk_restaurante_cidade
-         foreign key (endereco_cidade_id) references cidade (id);
+         foreign key (endereco_cidade_id) references tb_cidade (id);
 
          alter table restaurante_forma_pagamento add constraint fk_forma_pagamento_pagamento_forma
          foreign key (forma_pagamento_id) references forma_pagamento (id);
